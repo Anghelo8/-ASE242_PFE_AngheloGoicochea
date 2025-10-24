@@ -1,0 +1,26 @@
+<div class="container">
+  <h2>Gestión de Productos</h2>
+
+  <form [formGroup]="formProducto" (ngSubmit)="guardar()" class="form">
+    <input type="text" placeholder="Nombre" formControlName="nombre" />
+    <input type="number" placeholder="Precio" formControlName="precio" />
+    <input type="text" placeholder="Categoría" formControlName="categoria" />
+    <input type="text" placeholder="Descripción" formControlName="descripcion" />
+    <input type="text" placeholder="URL de imagen" formControlName="imagenUrl" />
+
+    <button type="submit">{{ editando ? 'Actualizar' : 'Agregar' }}</button>
+    <button type="button" (click)="resetForm()" *ngIf="editando">Cancelar</button>
+  </form>
+
+  <div class="cards">
+    <div class="card" *ngFor="let producto of productos">
+      <img [src]="producto.imagenUrl" alt="{{ producto.nombre }}" />
+      <h3>{{ producto.nombre }}</h3>
+      <p>{{ producto.descripcion }}</p>
+      <p><strong>Categoría:</strong> {{ producto.categoria }}</p>
+      <p><strong>Precio:</strong> S/. {{ producto.precio }}</p>
+      <button (click)="editar(producto)">Editar</button>
+      <button class="delete" (click)="eliminar(producto.id)">Eliminar</button>
+    </div>
+  </div>
+</div>

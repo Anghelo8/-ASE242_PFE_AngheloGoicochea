@@ -1,0 +1,57 @@
+      <div class="container">
+        <h2>Gestión de Clientes</h2>
+
+        <!-- ✅ CAMBIO 1: En formularios reactivos se usa [formGroup] en lugar de #formCliente="ngForm" -->
+        <form [formGroup]="formCliente" (ngSubmit)="guardar()" class="form">
+
+          <!-- ✅ CAMBIO 2: En lugar de [(ngModel)], usamos formControlName para enlazar los campos -->
+          <input 
+            type="text" 
+            placeholder="Nombre" 
+            formControlName="nombre"
+          />
+          <!-- ✅ CAMBIO 3: Ahora validamos accediendo al control desde el FormGroup -->
+          <div *ngIf="formCliente.get('nombre')?.invalid && formCliente.get('nombre')?.touched" class="error">
+            El nombre es obligatorio.
+          </div>
+
+          <input 
+            type="email" 
+            placeholder="Correo" 
+            formControlName="correo"
+          />
+          <div *ngIf="formCliente.get('correo')?.invalid && formCliente.get('correo')?.touched" class="error">
+            Ingresa un correo válido.
+          </div>
+
+          <!-- ✅ CAMBIO 4: [disabled] ahora depende del estado del FormGroup -->
+          <button type="submit" [disabled]="formCliente.invalid">
+            {{ editando ? 'Actualizar' : 'Agregar' }}
+          </button>
+
+          <button type="button" (click)="resetForm()" *ngIf="editando">Cancelar</button>
+        </form>
+
+        <!-- ✅ La tabla no cambia, sigue igual -->
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Correo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of clientes">
+              <td>{{ c.id }}</td>
+              <td>{{ c.nombre }}</td>
+              <td>{{ c.correo }}</td>
+              <td>
+                <button (click)="editar(c)">Editar</button>
+                <button (click)="eliminar(c.id)">Eliminar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
